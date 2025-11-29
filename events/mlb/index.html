@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams MLB: Live Baseball Streams – MLB Games, Playoffs & World Series</title>
+
+    <meta name="description"
+        content="BuffStreams provides fast and smooth HD streams for every MLB game. Watch live Major League Baseball matchups, regular season games, playoffs, and the World Series — featuring top teams like Yankees, Dodgers, Red Sox, Cubs, and more — all free to stream in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams MLB, live baseball streams, watch MLB online free, MLB 2025 live, Yankees stream, Dodgers live, Red Sox game stream, MLB Playoffs online, World Series streaming, baseball streaming free, BuffStreams baseball">
+
+      <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - MLB</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="page-header">
+
+        </div>
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<section class="sectionok">
+    <h2>Experience the Best of MLB Streaming on BuffStreams</h2>
+
+    <p>
+        Baseball fans now have instant access to every Major League Baseball game, from regular-season matchups to
+        high-stakes playoff games. BuffStreams delivers fast, HD-quality streams with smooth performance and full mobile
+        support, making it easy to follow your favorite teams, star players, and top MLB matchups from anywhere. As
+        streaming technology improves, viewers enjoy sharper visuals, clearer sound, and an immersive way to experience
+        every pitch, hit, and home run.
+    </p>
+
+    <p>
+        Instead of depending on cable networks, MLB fans now turn to digital platforms for live coverage, instant
+        highlights, expert analysis, and in-depth breakdowns of every game. This shift has completely transformed how
+        baseball content is consumed, making online streaming the preferred choice for fans worldwide.
+    </p>
+
+    <h3>24/7 MLB Coverage</h3>
+
+    <p>
+        Baseball enthusiasts want nonstop action, and BuffStreams delivers exactly that. From Opening Day and regular
+        season games to the MLB Playoffs and the World Series, the platform provides game previews, post-game interviews,
+        player updates, and detailed team insights — ensuring there’s always something exciting to watch.
+    </p>
+
+    <p>
+        With advanced streaming technology, MLB games run with minimal delay, high frame rates, and smooth transitions
+        between live broadcasts. Whether it’s a clutch home run, a pitching duel, or a playoff showdown, BuffStreams
+        guarantees a clean, fast, and uninterrupted viewing experience.
+    </p>
+
+    <h3>The Power of Online MLB Streaming</h3>
+
+    <p>
+        Online streaming has revolutionized the way fans follow baseball. BuffStreams allows viewers to watch games live,
+        replay key moments instantly, and access exclusive content such as locker-room footage, player interviews,
+        behind-the-scenes highlights, and detailed statistics for every matchup.
+    </p>
+
+    <p style="margin-bottom:0;">
+        Modern streaming platforms also integrate with social media, letting fans react, comment, and interact with other
+        baseball supporters in real time. BuffStreams creates a more engaging, connected, and exciting environment for
+        MLB fans around the globe.
+    </p>
+</section>
+    <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+
+                        if (!match.tournament.toLowerCase().includes("mlb")) return;
+
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+
+                        row.innerHTML = `
+<td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+<td>${match.tournament}</td>
+<td>${match.match}</td>
+<td>
+  <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+     href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+     Watch Now
+  </a>
+</td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

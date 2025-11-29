@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams Soccer: Live Football Streams – Premier League, LaLiga, UEFA & More</title>
+
+    <meta name="description"
+        content="BuffStreams brings you live football streams from every major league: Premier League, LaLiga, Champions League, Europa League, Serie A, Bundesliga, Ligue 1 and more. Watch Real Madrid, Barcelona, PSG, Bayern, Manchester City and all top clubs with fast, smooth and free HD streaming in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams football, BuffStreams soccer live, watch football online free, live soccer 2025, Premier League stream, LaLiga live online, Champions League stream free, UEFA live matches, Serie A streaming, Bundesliga free stream, Ligue 1 live match, football 2025 online">
+
+     <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - SOCCER</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <section class="sectionok">
+        <h2>BuffStreams Soccer – The Home of Live Football</h2>
+
+        <p>
+            BuffStreams Soccer gives fans a fast, reliable, and high-quality way to watch live football from anywhere.
+            Modern streaming technology makes it easy to follow every match, every goal, and every moment from the
+            world’s
+            biggest leagues in real time.
+        </p>
+
+        <p>
+            Football lovers no longer depend on traditional TV. Online platforms now offer deeper analysis, instant
+            updates,
+            and a smoother way to enjoy the sport. BuffStreams Soccer brings all of this together in one place, giving
+            fans
+            quick access to live streams and essential match coverage.
+        </p>
+
+        <h3>24/7 Football Coverage</h3>
+
+        <p>
+            Fans want football all day, every day — and BuffStreams delivers exactly that. From Premier League and
+            LaLiga to
+            Champions League, Bundesliga, Serie A, Ligue 1, and international fixtures, you get continuous access to
+            news,
+            highlights, previews, and post-match insights.
+        </p>
+
+        <p>
+            With stable servers and high-definition streams, BuffStreams Soccer ensures smooth viewing, fast loading,
+            and
+            zero interruptions during key matches and tournaments.
+        </p>
+
+        <h3>The Power of Online Football Streaming</h3>
+
+        <p>
+            Online streaming has changed how fans watch football worldwide. BuffStreams Soccer allows viewers to watch
+            live
+            games, replay goals instantly, and explore exclusive football content such as interviews, match stats, and
+            behind-the-scenes moments.
+        </p>
+
+        <p style="margin-bottom:0;">
+            Many modern streaming features also connect directly with social media, letting fans react, comment, and
+            share
+            match moments instantly. BuffStreams Soccer creates a more interactive, exciting, and connected football
+            experience for every supporter.
+        </p>
+    </section>
+    <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?sport=Football&format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+                        row.innerHTML = `
+  <td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+  <td>${match.tournament}</td>
+  <td>${match.match}</td>
+  <td>
+    <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+       href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+       Watch Now
+    </a>
+  </td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+</html>

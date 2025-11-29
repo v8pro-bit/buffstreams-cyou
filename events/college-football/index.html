@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams CFB: Live College Football Streams – NCAA Games, Bowls & Playoff Action</title>
+
+    <meta name="description"
+        content="BuffStreams offers fast and smooth HD streams for every college football game. Watch live NCAA matchups, rivalries, bowl games, conference championships, and the College Football Playoff — all free to watch in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams CFB, college football live streams, NCAA football online, CFB 2025 live, bowl game streams, conference championship live, college playoff streaming, watch NCAA football free, BuffStreams college football">
+
+      <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - College FootBall</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="page-header">
+
+        </div>
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <section class="sectionok">
+        <h2>Experience the Best of College Football Streaming on BuffStreams</h2>
+
+        <p>
+            College football has become one of the most exciting and fast-growing sports to stream online, giving fans
+            instant,
+            high-quality access to every major NCAA matchup. With HD streams, smooth performance, and full mobile
+            support,
+            BuffStreams makes it effortless to follow your favorite teams, star athletes, rivalries, and weekly college
+            showdowns throughout the entire season. As streaming technology evolves, viewers enjoy sharper visuals,
+            cleaner
+            audio, and an immersive way to experience every big play.
+        </p>
+
+        <p>
+            Rather than depending on cable networks, college football fans now choose digital platforms for real-time
+            highlights, expert commentary, instant replays, and in-depth game coverage. This shift has completely
+            changed how
+            NCAA football is consumed, making online streaming the preferred choice for millions of supporters
+            nationwide.
+        </p>
+
+        <h3>24/7 College Football Coverage</h3>
+
+        <p>
+            Fans want constant updates, and BuffStreams delivers exactly that. From regular-season games and ranked
+            matchups to
+            Conference Championships, Bowl Games, and the College Football Playoff, the platform provides highlights,
+            interviews, recruiting news, and team insights — ensuring there’s always something exciting to watch.
+        </p>
+
+        <p>
+            With advanced streaming technology, CFB games run with minimal delay, high frame rates, and smooth
+            transitions
+            between live events. Whether it’s a game-changing touchdown, a rivalry classic, or a playoff elimination
+            battle,
+            BuffStreams guarantees a clean, fast, and uninterrupted viewing experience.
+        </p>
+
+        <h3>The Power of Online College Football Streaming</h3>
+
+        <p>
+            Online streaming has completely transformed how NCAA football fans watch their favorite teams. BuffStreams
+            gives
+            users the ability to enjoy live games, replay major moments instantly, and access exclusive content such as
+            sideline reactions, locker-room interviews, recruiting updates, and advanced player analytics that enhance
+            the
+            viewing experience.
+        </p>
+
+        <p style="margin-bottom:0;">
+            Modern streaming platforms also integrate with social networks, allowing fans to react, discuss, and
+            interact with
+            other college football supporters in real time. BuffStreams creates a more engaging, connected, and exciting
+            environment for CFB fans across the country.
+        </p>
+    </section>
+    <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+
+                        if (!match.tournament.toLowerCase().includes("college football")) return;
+
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+
+                        row.innerHTML = `
+<td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+<td>${match.tournament}</td>
+<td>${match.match}</td>
+<td>
+  <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+     href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+     Watch Now
+  </a>
+</td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

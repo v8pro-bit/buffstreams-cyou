@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams NHL: Live Hockey Streams – NHL Games, Playoffs & More</title>
+
+    <meta name="description"
+        content="BuffStreams offers fast and smooth HD streams for every NHL game. Watch live hockey matchups, regular season action, playoffs, the Stanley Cup Finals, and top teams like the Rangers, Bruins, Maple Leafs, Oilers, Penguins and more — all free to watch in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams NHL, NHL live streams, watch hockey online free, NHL 2025 live, Rangers stream, Bruins live, Maple Leafs stream, NHL Playoffs online, hockey streaming free, Stanley Cup live, BuffStreams hockey">
+
+      <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - NHL</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="page-header">
+            
+        </div>
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<section class="sectionok">
+    <h2>Experience the Best of NHL Streaming on BuffStreams</h2>
+
+    <p>
+        The world of hockey streaming has evolved rapidly, giving fans instant and easy access to NHL action from anywhere.
+        With HD-quality streams, smooth performance, and full mobile support, BuffStreams makes it simple to follow your
+        favorite teams, players, and matchups throughout the season. As streaming technology improves, viewers enjoy
+        sharper visuals, clearer audio, and a more immersive way to experience every shift on the ice.
+    </p>
+
+    <p>
+        Instead of depending on cable TV, NHL fans are turning to digital platforms for real-time highlights, expert
+        breakdowns, instant replays, and in-depth game analysis. This shift has completely changed how hockey content is
+        consumed, making online streaming the preferred choice for millions of fans worldwide.
+    </p>
+
+    <h3>24/7 NHL Coverage</h3>
+
+    <p>
+        Hockey fans expect nonstop coverage, and BuffStreams delivers exactly that. From regular-season games and rivalry
+        matchups to the Stanley Cup Playoffs, the platform provides highlights, interviews, trade updates, and detailed
+        team insights — ensuring there is always something exciting available to watch.
+    </p>
+
+    <p>
+        With advanced streaming technology, NHL games stream with minimal delay, high frame rates, and smooth transitions
+        between live events. Whether it’s an overtime thriller or a key playoff showdown, BuffStreams guarantees a clean
+        and uninterrupted viewing experience.
+    </p>
+
+    <h3>The Power of Online NHL Streaming</h3>
+
+    <p>
+        Online streaming has changed the way fans watch hockey. BuffStreams allows users to enjoy live games, replay big
+        moments instantly, and access exclusive NHL content such as locker-room interviews, bench reactions, and detailed
+        player statistics that enhance the viewing experience.
+    </p>
+
+    <p style="margin-bottom:0;">
+        Modern streaming platforms also connect with social media, giving fans the ability to react, comment, and interact
+        with other supporters in real time. BuffStreams creates a more engaging and connected environment for NHL fans
+        across the globe.
+    </p>
+</section>
+  <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+
+                        if (!match.tournament.toLowerCase().includes("nhl")) return;
+
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+
+                        row.innerHTML = `
+<td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+<td>${match.tournament}</td>
+<td>${match.match}</td>
+<td>
+  <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+     href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+     Watch Now
+  </a>
+</td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

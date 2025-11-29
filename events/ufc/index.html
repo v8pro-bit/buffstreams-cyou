@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams UFC & MMA: Live Fight Streams – UFC, Bellator, PFL & More</title>
+
+    <meta name="description"
+        content="BuffStreams provides fast and smooth HD streams for every UFC and MMA fight. Watch live events from UFC, Bellator, PFL, and top mixed martial arts promotions — including title fights, contender matchups, and pay-per-view events — all free to stream in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams UFC, BuffStreams MMA, live MMA streams, watch UFC online free, Bellator live stream, PFL fights online, MMA 2025 streaming, UFC title fight stream, Bellator PPV live, PFL tournament online, BuffStreams fights">
+
+      <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - UFC</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="page-header">
+
+        </div>
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<section class="sectionok">
+    <h2>Experience the Best of UFC & MMA Streaming on BuffStreams</h2>
+
+    <p>
+        UFC and MMA fans now have instant access to every major fight night, from championship bouts to high-stakes
+        matchups. BuffStreams delivers fast, HD-quality streams with smooth performance and full mobile support, making
+        it easy to follow top fighters, title fights, and major promotions from anywhere. As streaming technology
+        advances, viewers enjoy sharper visuals, clearer sound, and an immersive way to feel every strike, grapple, and
+        knockout.
+    </p>
+
+    <p>
+        Instead of relying on cable or pay-per-view networks, UFC fans now turn to digital platforms for live coverage,
+        instant highlights, expert analysis, and detailed fight breakdowns. This shift has completely transformed how
+        MMA content is consumed, making online streaming the top choice for fight enthusiasts worldwide.
+    </p>
+
+    <h3>24/7 UFC & MMA Coverage</h3>
+
+    <p>
+        Mixed martial arts fans demand nonstop action, and BuffStreams delivers exactly that. From UFC Fight Nights,
+        pay-per-view events, Bellator, PFL, and regional promotions, the platform provides fight previews, weigh-ins,
+        post-fight interviews, and exclusive behind-the-scenes content — ensuring there’s always something exciting to
+        watch.
+    </p>
+
+    <p>
+        With advanced streaming technology, UFC and MMA fights run with minimal delay, high frame rates, and smooth
+        transitions between live bouts. Whether it’s a title defense, a contender showdown, or a championship rematch,
+        BuffStreams guarantees a clean, fast, and uninterrupted viewing experience.
+    </p>
+
+    <h3>The Power of Online UFC & MMA Streaming</h3>
+
+    <p>
+        Online streaming has revolutionized how fans experience UFC and MMA. BuffStreams lets viewers watch live fights,
+        replay key moments instantly, and access exclusive content such as fighter interviews, locker-room footage,
+        weigh-in coverage, and detailed fight statistics to enhance the viewing experience.
+    </p>
+
+    <p style="margin-bottom:0;">
+        Modern streaming platforms also integrate with social media, allowing fans to share reactions, comment in real
+        time, and interact with other supporters. BuffStreams creates a more connected, interactive, and thrilling
+        environment for UFC and MMA fans around the globe.
+    </p>
+</section>
+    <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+
+                        if (!match.tournament.toLowerCase().includes("ufc")) return;
+
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+
+                        row.innerHTML = `
+<td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+<td>${match.tournament}</td>
+<td>${match.match}</td>
+<td>
+  <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+     href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+     Watch Now
+  </a>
+</td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

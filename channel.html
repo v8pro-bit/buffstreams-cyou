@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Links</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+</head>
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container">
+
+        <div id="match-title" class="match-heading2">Loading...</div>
+
+        <div class="section-title2">
+            Stream Sources <span id="channel-count"></span>
+        </div>
+
+        <div id="channel-list" class="stream-list"></div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+
+        function decodeChannels(data) {
+            try {
+                return JSON.parse(decodeURIComponent(escape(atob(data))));
+            } catch {
+                return [];
+            }
+        }
+        const match = decodeURIComponent(urlParams.get("match") || "Match");
+        const data = urlParams.get("data") || "";
+        const channels = decodeChannels(data);
+
+        document.getElementById("match-title").textContent = match;
+        document.getElementById("channel-count").textContent = `(${channels.length})`;
+
+        const channelList = document.getElementById("channel-list");
+
+        channels.forEach((link, i) => {
+            let name = "Stream " + (i + 1);
+
+            try {
+                const url = new URL(link);
+                const last = decodeURIComponent(url.pathname.split("/").pop());
+                if (last) name = last;
+            } catch { }
+
+            const box = document.createElement("a");
+            box.className = "stream-box";
+            box.href = "watch.html?src=" + encodeURIComponent(link);
+            box.target = "_blank";
+
+            box.innerHTML = `
+        <div class="dot"></div>
+        <div class="stream-name">${name}</div>
+    `;
+
+            channelList.appendChild(box);
+        });
+
+        if (channels.length === 0) {
+            channelList.innerHTML = "<p>No streams found.</p>";
+        }
+    </script>
+
+</body>
+
+</html>

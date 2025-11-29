@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BuffStreams Boxing: Live Boxing Streams – Championship Fights & Top Promotions</title>
+
+    <meta name="description"
+        content="BuffStreams offers fast and smooth HD streams for every boxing match. Watch live world championship fights, major promotions like WBC, WBA, IBF, WBO, and top bouts with your favorite boxers — all free to stream in 2025.">
+
+    <meta name="keywords"
+        content="BuffStreams Boxing, live boxing streams, watch boxing online free, championship fights streaming, WBC live, WBA boxing stream, IBF fights online, WBO live matches, boxing 2025, top boxing bouts free, BuffStreams fights">
+
+      <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" sizes="512x512" href="https://buffstreams.cyou/buffstreams.png">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="header-wrap">
+
+        <div class="roja-header">
+
+            <div class="header-title">BUFFSTREAMS - BOXING</div>
+        </div>
+
+        <div class="header-bottom-bar">
+            <a href="/contact/">Contact</a>
+            <a href="/dmca/">DMCA</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms Of Service</a>
+        </div>
+    </div>
+    <div class="container my-5">
+        <div class="page-header">
+
+        </div>
+        <div class="schedule-box">
+            <div class="schedule-head">Today’s Matches — Live Schedule</div>
+            <table class="schedule-table" id="match-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Teams</th>
+                    <th>Watch</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="4" style="text-align:center;">
+                        <div class="loader"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<section class="sectionok">
+    <h2>Experience the Best of Boxing Streaming on BuffStreams</h2>
+
+    <p>
+        Boxing fans now have instant access to every major fight, from championship bouts to high-stakes undercards.
+        BuffStreams delivers fast, HD-quality streams with smooth performance and full mobile support, making it easy
+        to follow top fighters, title matches, and world-class promotions from anywhere. As streaming technology
+        improves, viewers enjoy sharper visuals, clearer sound, and an immersive way to feel every punch and every round.
+    </p>
+
+    <p>
+        Instead of depending on cable or pay-per-view networks, boxing fans now rely on digital platforms for live
+        coverage, instant highlights, expert analysis, and in-depth fight breakdowns. This shift has completely
+        transformed how boxing content is consumed, making online streaming the top choice for fight fans worldwide.
+    </p>
+
+    <h3>24/7 Boxing Coverage</h3>
+
+    <p>
+        Boxing enthusiasts expect nonstop updates, and BuffStreams delivers exactly that. From world championship
+        matches and major league promotions like WBC, WBA, IBF, WBO, and regional events, the platform provides
+        fight previews, post-fight interviews, weigh-ins, and exclusive behind-the-scenes content — ensuring there
+        is always something exciting to watch.
+    </p>
+
+    <p>
+        With advanced streaming technology, boxing matches run with minimal delay, high frame rates, and smooth
+        transitions between rounds. Whether it’s a title fight, a contender clash, or an epic rematch, BuffStreams
+        guarantees a clean, fast, and uninterrupted viewing experience.
+    </p>
+
+    <h3>The Power of Online Boxing Streaming</h3>
+
+    <p>
+        Online streaming has completely changed the way fans experience boxing. BuffStreams allows viewers to watch
+        fights live, replay knockout moments instantly, and access exclusive content such as locker-room footage,
+        fighter interviews, pre-fight weigh-ins, and detailed statistics for each match.
+    </p>
+
+    <p style="margin-bottom:0;">
+        Modern streaming platforms also integrate with social media, letting fans share reactions, discuss fight
+        outcomes, and interact with other boxing supporters in real time. BuffStreams creates a more engaging,
+        interactive, and thrilling environment for boxing fans around the globe.
+    </p>
+</section>
+    <script>
+        const loaderRow = document.getElementById("loader-row");
+        const table = document.getElementById("match-table");
+
+        fetch("https://topembed.pw/api.php?format=json")
+            .then(res => res.json())
+            .then(data => {
+                loaderRow.style.display = "none";
+
+                const now = Date.now() / 1000;
+
+                for (const date in data.events) {
+                    data.events[date].forEach(match => {
+
+                        if (!match.tournament.toLowerCase().includes("boxing")) return;
+
+                        let timeDisplay = new Date(match.unix_timestamp * 1000)
+                            .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        let isLive = now >= match.unix_timestamp;
+
+                        const row = document.createElement("tr");
+
+                        const encodedChannels = btoa(
+                            unescape(encodeURIComponent(JSON.stringify(match.channels)))
+                        );
+
+                        row.innerHTML = `
+<td>${isLive ? `<span class="live-badge">LIVE</span>` : `<span class="time-badge">${timeDisplay}</span>`}</td>
+<td>${match.tournament}</td>
+<td>${match.match}</td>
+<td>
+  <a class="watch-btn1 ${isLive ? "watch-live" : ""}"
+     href="/channel.html?match=${encodeURIComponent(match.match)}&data=${encodedChannels}">
+     Watch Now
+  </a>
+</td>
+`;
+                        table.appendChild(row);
+
+                    });
+                }
+
+                const searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("input", e => {
+                    const query = e.target.value.toLowerCase();
+                    const rows = table.querySelectorAll("tr");
+                    rows.forEach((r, i) => {
+                        if (i <= 1) return;
+                        r.style.display = r.innerText.toLowerCase().includes(query) ? "" : "none";
+                    });
+                });
+
+            })
+            .catch(err => {
+                loaderRow.innerHTML = `<td colspan="4" style="text-align:center;color:red;">Failed to load matches</td>`;
+                console.error("API ERROR:", err);
+            });
+    </script>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-title">🔥 BuffStreams</p>
+            <p class="footer-copy">buffstreams.cyou &copy; 2025. All Rights Reserved.</p>
+            <p class="footer-tagline">The official home of BuffStreams.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
